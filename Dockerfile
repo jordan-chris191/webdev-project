@@ -19,6 +19,8 @@ RUN composer install \
     --no-interaction \
     --no-scripts
 
+RUN php bin/console importmap:install --no-interaction
+
 EXPOSE 8080
 
 CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
