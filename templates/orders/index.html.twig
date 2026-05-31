@@ -28,6 +28,7 @@
             <thead>
                 <tr>
                     <th>Order ID</th>
+                    <th>Customer</th>
                     <th>Created</th>
                     <th>Updated</th>
                     <th>Status</th>
@@ -43,8 +44,19 @@
                         <span class="order-id">#{{ order.id }}</span>
                     </td>
                     <td>
+                        {% if order.user %}
+                            <div class="order-date">
+                                
+                                {{ order.user.name ?? order.user.email }}
+                            </div>
+                           
+                        {% else %}
+                            <span class="text-muted">Guest</span>
+                        {% endif %}
+                    </td>
+                    <td>
                         <div class="order-date">
-                            <i class="far fa-calendar me-1"></i>
+                           
                             {{ order.createdAt ? order.createdAt|date('M d, Y') : '-' }}
                         </div>
                         <small class="text-muted">{{ order.createdAt ? order.createdAt|date('h:i A') : '' }}</small>
@@ -62,25 +74,34 @@
                         </div>
                     </td>
                     <td>
-                        {% if order.status == 'Pending' %}
+                       {% if order.status == 'pending' %}
                             <span class="status-badge status-pending">
-                                <i class="fas fa-clock"></i>Pending
+                                <i class="fas fa-clock"></i> Pending
                             </span>
-                        {% elseif order.status == 'Approved' %}
-                            <span class="status-badge status-approved">
-                                <i class="fas fa-check"></i>Approved
+
+                        {% elseif order.status == 'confirmed' %}
+                            <span class="status-badge status-confirmed">
+                                <i class="fas fa-check"></i> Confirmed
                             </span>
-                        {% elseif order.status == 'Completed' %}
-                            <span class="status-badge status-completed">
-                                <i class="fas fa-check-double"></i>Completed
+
+                        {% elseif order.status == 'shipped' %}
+                            <span class="status-badge status-shipped">
+                                <i class="fas fa-truck"></i> Shipped
                             </span>
-                        {% elseif order.status == 'Cancelled' %}
+
+                        {% elseif order.status == 'delivered' %}
+                            <span class="status-badge status-delivered">
+                                <i class="fas fa-check-double"></i> Delivered
+                            </span>
+
+                        {% elseif order.status == 'cancelled' %}
                             <span class="status-badge status-cancelled">
-                                <i class="fas fa-times"></i>Cancelled
+                                <i class="fas fa-times"></i> Cancelled
                             </span>
+
                         {% else %}
                             <span class="status-badge status-default">
-                                <i class="fas fa-question"></i>{{ order.status }}
+                                {{ order.status }}
                             </span>
                         {% endif %}
                     </td>
@@ -110,7 +131,7 @@
                                 <i class="fas fa-eye"></i>
                             </a>
 
-                            {% if is_granted('ROLE_STAFF') and order.status == 'Pending' %}
+                            {% if order.status == 'pending' %}
                                 <a href="{{ path('app_orders_edit', {'id': order.id}) }}" 
                                    class="action-btn action-btn-edit" 
                                    title="Edit Order">
@@ -118,9 +139,9 @@
                                 </a>
                             {% endif %}
 
-                            {% if is_granted('ROLE_STAFF') %}
+                            
                                 {{ include('orders/_delete_form.html.twig') }}
-                            {% endif %}
+                           
                         </div>
                     </td>
                 </tr>

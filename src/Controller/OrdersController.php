@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/orders')]
+
 final class OrdersController extends AbstractController
 {
     private ActivityLogger $logger;
