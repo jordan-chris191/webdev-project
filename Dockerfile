@@ -12,11 +12,11 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 COPY . .
 
-# 🔥 IMPORTANT FIX: disable Symfony Flex scripts during install
+# install dependencies
 RUN composer install \
     --no-dev \
     --optimize-autoloader \
-    --no-interaction \
+    --no-interaction
 
 EXPOSE 8080
 
