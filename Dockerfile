@@ -16,7 +16,8 @@ COPY . .
 RUN composer install \
     --no-dev \
     --optimize-autoloader \
-    --no-interaction
+    --no-interaction \
+    --no-scripts
 
 EXPOSE 8080
 
